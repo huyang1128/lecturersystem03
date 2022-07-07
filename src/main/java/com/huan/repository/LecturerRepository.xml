@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.huan.repository.LecturerRepository">
+  <resultMap id="BaseResultMap" type="com.huan.domain.Lecturer">
+    <id column="lec_id" jdbcType="INTEGER" property="lecId" />
+    <result column="lec_name" jdbcType="VARCHAR" property="lecName" />
+    <result column="d_id" jdbcType="INTEGER" property="dId" />
+    <result column="p_id" jdbcType="INTEGER" property="pId" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    lec_id, lec_name, d_id, p_id, telephone
+  </sql>
+  <select id="selectByExample" parameterType="com.huan.domain.LecturerExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from lecturer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lecturer
+    where lec_id = #{lecId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lecturer
+    where lec_id = #{lecId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.huan.domain.LecturerExample">
+    delete from lecturer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.huan.domain.Lecturer">
+    insert into lecturer (lec_name, d_id, p_id, 
+      telephone)
+    values (#{lecName,jdbcType=VARCHAR}, #{dId,jdbcType=INTEGER}, #{pId,jdbcType=INTEGER}, 
+      #{telephone,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.huan.domain.Lecturer">
+    insert into lecturer
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lecName != null">
+        lec_name,
+      </if>
+      <if test="dId != null">
+        d_id,
+      </if>
+      <if test="pId != null">
+        p_id,
+      </if>
+      <if test="telephone != null">
+        telephone,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lecName != null">
+        #{lecName,jdbcType=VARCHAR},
+      </if>
+      <if test="dId != null">
+        #{dId,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null">
+        #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null">
+        #{telephone,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.huan.domain.LecturerExample" resultType="java.lang.Long">
+    select count(*) from lecturer
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update lecturer
+    <set>
+      <if test="record.lecId != null">
+        lec_id = #{record.lecId,jdbcType=INTEGER},
+      </if>
+      <if test="record.lecName != null">
+        lec_name = #{record.lecName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.dId != null">
+        d_id = #{record.dId,jdbcType=INTEGER},
+      </if>
+      <if test="record.pId != null">
+        p_id = #{record.pId,jdbcType=INTEGER},
+      </if>
+      <if test="record.telephone != null">
+        telephone = #{record.telephone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update lecturer
+    set lec_id = #{record.lecId,jdbcType=INTEGER},
+      lec_name = #{record.lecName,jdbcType=VARCHAR},
+      d_id = #{record.dId,jdbcType=INTEGER},
+      p_id = #{record.pId,jdbcType=INTEGER},
+      telephone = #{record.telephone,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.huan.domain.Lecturer">
+    update lecturer
+    <set>
+      <if test="lecName != null">
+        lec_name = #{lecName,jdbcType=VARCHAR},
+      </if>
+      <if test="dId != null">
+        d_id = #{dId,jdbcType=INTEGER},
+      </if>
+      <if test="pId != null">
+        p_id = #{pId,jdbcType=INTEGER},
+      </if>
+      <if test="telephone != null">
+        telephone = #{telephone,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where lec_id = #{lecId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.huan.domain.Lecturer">
+    update lecturer
+    set lec_name = #{lecName,jdbcType=VARCHAR},
+      d_id = #{dId,jdbcType=INTEGER},
+      p_id = #{pId,jdbcType=INTEGER},
+      telephone = #{telephone,jdbcType=VARCHAR}
+    where lec_id = #{lecId,jdbcType=INTEGER}
+  </update>
+</mapper>
